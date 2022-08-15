@@ -44,8 +44,21 @@ wss.on('connection', function connection(ws) {
   // client.publish('app:notifications', article);
 
 
-  ws.on('message', function message(data) {
-    console.log('received: %s', data);
+  ws.on('message', async function message(data) {
+    data = JSON.parse(data)
+    if(data.type == "QUERY"){
+      console.log("ohohohoh, a query", data)
+      let res = await client.graph.query(data.graph, data.query );
+
+      console.log("res", res)
+      data.type= "resultat",
+      data.res = res
+      data.end = Date.now()
+      ws.send(JSON.stringify(data))
+    }else{
+      console.log('received: %s', data);
+    }
+
   });
 
   // broadcast on web socket when receving a Redis PUB/SUB Event

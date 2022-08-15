@@ -8,6 +8,12 @@
       message:  {{message}}
     </h3>
     <hr>
+    <b-container>
+      <b-input v-model="humain1" placeholder="Humain1" /> knows     <b-input v-model="humain2" placeholder="Humain2" />
+      <b-button @click="testCreate">Test Create</b-button>
+    </b-container>
+    <b-button @click="testMatch">Test Match</b-button>
+    <hr>
     <router-view/>
 
 
@@ -22,15 +28,18 @@ export default {
   data() {
     return {
       message: "df",
+      ws: null,
+      humain1: "",
+      humain2: ""
     }
   },
   created(){
     try {
-      const ws = new WebSocket("ws://localhost:3000/");
-      ws.onopen = () =>{
-        ws.send('coucou')
+      this.ws = new WebSocket("ws://localhost:3000/");
+      this.ws.onopen = () =>{
+        this.ws.send(JSON.stringify({message: 'coucou'}))
       }
-      ws.onmessage = ({data}) => {
+      this.ws.onmessage = ({data}) => {
         this.message =  data;
         console.log(this.message);
       }
@@ -38,6 +47,14 @@ export default {
       console.log(err);
     }
   },
+  methods: {
+    testCreate(){
+      this.ws.send(JSON.stringify({type: "QUERY", graph:"GRAPH_DEMO", query:"CREATE (r:Human {name:'"+this.humain1+"' , age:34}), (a:Human {name:'"+this.humain2+"', age:32}), (r)-[:knows]->(a)", start: Date.now()}))
+    },
+    testMatch(){
+      this.ws.send(JSON.stringify({type: "QUERY", graph:"GRAPH_DEMO", query:"MATCH (x) RETURN x.name", start: Date.now()}))
+    }
+  }
 }
 </script>
 

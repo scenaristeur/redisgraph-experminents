@@ -1,5 +1,4 @@
 - https://www.youtube.com/watch?v=aGHALjV6JGc
-- portainer admin/adminadminadmin
 
 ```
 docker run --name redisgraph --rm --network host -p 6379:6379 -it -v redis-data:/data redislabs/redisgraph:edge
@@ -86,38 +85,72 @@ redis-cli
 127.0.0.1:6379> GRAPH.QUERY GRAPH_DEMO "MATCH (x) RETURN x.name"
 1) 1) "x.name"
 2)  1) 1) "Roi Lipman"
-    2) 1) "Alon Fital"
-    3) 1) "Ailon Velger"
-    4) 1) "Ori Laslo"
-    5) 1) "Boaz Arad"
-    6) 1) "Omri Traub"
-    7) 1) "Tal Doron"
-    8) 1) "Lucy Yanfital"
-    9) 1) "Jane Chernomorin"
-   10) 1) "Shelly Laslo Rooz"
-   11) 1) "Valerie Abigail Arad"
-   12) 1) "Gal Derriere"
-   13) 1) "Mor Yesharim"
-   14) 1) "Noam Nativ"
-   15) 1) "USA"
-   16) 1) "Prague"
-   17) 1) "Japan"
-   18) 1) "Greece"
-   19) 1) "Canada"
-   20) 1) "China"
-   21) 1) "Amsterdam"
-   22) 1) "Andora"
-   23) 1) "Kazakhstan"
-   24) 1) "Russia"
-   25) 1) "Germany"
-   26) 1) "Italy"
-   27) 1) "Thailand"
+2) 1) "Alon Fital"
+3) 1) "Ailon Velger"
+4) 1) "Ori Laslo"
+5) 1) "Boaz Arad"
+6) 1) "Omri Traub"
+7) 1) "Tal Doron"
+8) 1) "Lucy Yanfital"
+9) 1) "Jane Chernomorin"
+10) 1) "Shelly Laslo Rooz"
+11) 1) "Valerie Abigail Arad"
+12) 1) "Gal Derriere"
+13) 1) "Mor Yesharim"
+14) 1) "Noam Nativ"
+15) 1) "USA"
+16) 1) "Prague"
+17) 1) "Japan"
+18) 1) "Greece"
+19) 1) "Canada"
+20) 1) "China"
+21) 1) "Amsterdam"
+22) 1) "Andora"
+23) 1) "Kazakhstan"
+24) 1) "Russia"
+25) 1) "Germany"
+26) 1) "Italy"
+27) 1) "Thailand"
 3) 1) "Cached execution: 0"
-   2) "Query internal execution time: 0.146875 milliseconds"
+2) "Query internal execution time: 0.146875 milliseconds"
 
 ```
 
 # node-redis
+see experimentations_node-redis folder
+
+```
+import { createClient } from 'redis';
+
+const client = createClient();
+
+client.on('error', (err) => console.log('Redis Client Error', err));
+
+await client.connect();
+
+await client.set('key', 'value');
+const value = await client.get('key');
+console.log("get value",value)
+
+let res = await client.graph.query('GRAPH_DEMO',
+"CREATE (r:human {name:'roi', age:34}), (a:human {name:'amit', age:32}), (r)-[:knows]->(a)"
+);
+
+console.log("res", res)
+
+let match = await client.graph.query('GRAPH_DEMO',
+"MATCH (x) RETURN x.name"
+);
+
+console.log("match", match)
+```
+
+
+# pas de support htttp -> need websocket-redis bridge https://redis.com/blog/how-to-create-notification-services-with-redis-websockets-and-vue-js/
+
+
+
+
 - https://github.com/redis/node-redis
 - https://github.com/redis/node-redis/tree/master/packages/graph
 - pubsub https://github.com/redis/node-redis#pubsub
@@ -136,36 +169,29 @@ import TestUtils from '@redis/test-utils';
 import RedisGraph from '.';
 
 export default new TestUtils({
-    dockerImageName: 'redislabs/redisgraph',
-    dockerImageVersionArgument: 'redisgraph-version',
-    defaultDockerVersion: '2.8.15'
-});
+  dockerImageName: 'redislabs/redisgraph',
+  dockerImageVersionArgument: 'redisgraph-version',
+  defaultDockerVersion: '2.8.15'
+  });
 
-export const GLOBAL = {
+  export const GLOBAL = {
     SERVERS: {
-        OPEN: {
-            serverArguments: ['--loadmodule /usr/lib/redis/modules/redisgraph.so'],
-            clientOptions: {
-                modules: {
-                    graph: RedisGraph
-                }
-            }
+      OPEN: {
+        serverArguments: ['--loadmodule /usr/lib/redis/modules/redisgraph.so'],
+        clientOptions: {
+          modules: {
+            graph: RedisGraph
+          }
         }
+      }
     }
-};
-```
+  };
+  ```
 
 
+  ----
+  # redis OM ?
+  - https://redis.io/docs/stack/get-started/tutorials/stack-node/
 
 
-
-
-
-
-
-
-
-
-
-
-- outdated https://joshdurbin.net/posts/2020-1-redis-graph-product-recommendation-part-1-data-loading/
+  - outdated https://joshdurbin.net/posts/2020-1-redis-graph-product-recommendation-part-1-data-loading/

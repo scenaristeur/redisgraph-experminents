@@ -2,6 +2,11 @@ import { createClient } from 'redis';
 
 const client = createClient();
 
+// or with config https://github.com/redis/node-redis/blob/3547b2029397c3cad4fd41d8eb5bafc43fe05ad4/docs/client-configuration.md
+// createClient({
+//   url: 'redis://alice:foobared@awesome.redis.server:6380'
+// });
+
 client.on('error', (err) => console.log('Redis Client Error', err));
 
 await client.connect();

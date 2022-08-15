@@ -4,8 +4,14 @@
 docker run --name redisgraph --rm --network host -p 6379:6379 -it -v redis-data:/data redislabs/redisgraph:edge
 docker run --name redisinsight --rm --network host -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
 
+```
+or with redisgraph+ redisjson -> redis stack https://developer.redis.com/create/redis-stack
 
 ```
+ docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 -v redis-data:/data redis/redis-stack:latest
+```
+et pour y acceder ` docker exec -it redis-stack redis-cli`
+
 
 redis-cli : sudo apt install redis-tools
 
@@ -148,7 +154,14 @@ console.log("match", match)
 
 # pas de support htttp -> need websocket-redis bridge https://redis.com/blog/how-to-create-notification-services-with-redis-websockets-and-vue-js/
 
+# voir redis nested json
+- https://developer.redis.com/howtos/redisjson/storing-complex-json-document/
+- https://developer.redis.com/howtos/redisjson/using-nodejs/
+- et/ou jsonld playground format N-quads ou normalized
+- https://redis.com/blog/index-and-query-json-docs-with-redis/
+- https://github.com/redis/node-redis/blob/master/examples/search-json.js
 
+Using the Redis MONITOR command, you can see the Redis commands that node-redis sent to the Redis server while running the application: redis-cli > monitor
 
 
 - https://github.com/redis/node-redis
@@ -156,6 +169,9 @@ console.log("match", match)
 - pubsub https://github.com/redis/node-redis#pubsub
 - client config https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
 - graph commands https://redis.io/commands/graph.query/
+
+# build nodejs app https://developer.redis.com/create/docker/nodejs-nginx-redis/
+
 
 # alternatives
 - https://github.com/RedisGraph/redisgraph.js/tree/master

@@ -19,6 +19,9 @@ redis-cli : sudo apt install redis-tools
 -> redis-cli
 
 
+GRAPH.LIST -> lister les graphs
+--> commands : https://redis.io/commands/?group=graph
+
 ```
 redis-cli
 127.0.0.1:6379> GRAPH.QUERY MyFirstGraph "CREATE (hans:Person {name: 'Hans'})-[:loves]->(cheese:Food {name: 'cheese'})"

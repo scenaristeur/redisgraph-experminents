@@ -1,7 +1,7 @@
 - https://www.youtube.com/watch?v=aGHALjV6JGc
 
 ```
-docker run --name redisgraph --rm --network host -p 6379:6379 -it -v redis-data:/data redislabs/redisgraph:edge
+docker run --name redisgraph --rm --network host -p 6379:6379 -it -v redis-data:/data redislabs/redisgraph:edge &&
 docker run --name redisinsight --rm --network host -v redisinsight:/db -p 8001:8001 redislabs/redisinsight:latest
 
 ```

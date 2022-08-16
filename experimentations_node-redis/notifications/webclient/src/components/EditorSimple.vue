@@ -1,18 +1,18 @@
 <template>
   <div >
-    <div >
-      <h1 style="text-align:center">This is vue editor.js <a href="https://twitter.com/@code4mk" target="_blank">@code4mk</a></h1>
-    </div>
+    <!-- <div >
+    <h1 style="text-align:center">This is vue editor.js <a href="https://twitter.com/@code4mk" target="_blank">@code4mk</a></h1>
+  </div> -->
 
-    <div class="editorx_body">
-      <!--editorjs id-->
-      <div class id="codex-editor"/>
-    </div>
-    <button style="margin-left: 30%;" type="button" name="button" @click="save()">save</button>
-    <div class="editorx_body">
-      <pre>{{value}}</pre>
-    </div>
+  <div class="editorx_body">
+    <!--editorjs id-->
+    <div class id="codex-editor"/>
   </div>
+  <button style="margin-left: 30%;" type="button" name="button" @click="save()">save</button>
+  <div class="editorx_body">
+    <pre>{{value}}</pre>
+  </div>
+</div>
 </template>
 
 <script>
@@ -21,11 +21,49 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import List from "@editorjs/list";
+import Undo from 'editorjs-undo';
+import DragDrop from 'editorjs-drag-drop';
+import Quote from '@editorjs/quote';
+import Delimiter from '@editorjs/delimiter';
+import Warning from '@editorjs/warning';
+
+
 export default {
   name: 'EditorSimple',
   data() {
     return {
-      value: null
+      value: null,
+      initData: {
+        time: 1554508385558,
+        blocks: [
+          { type: "header", data: { text: "Hello Vue/Editor.js", level: 2 } },
+          {
+            type: "list",
+            data: {
+              style: "ordered",
+              items: ["Learn Vue.js<br>", "Learn Editor.js"]
+            }
+          },
+          {
+            type: "quote",
+            data: {
+              text: "This is awesome block based editor.<br>",
+              caption: "",
+              alignment: "left"
+            }
+          },
+          { type: "delimiter", data: {} },
+          {
+            type: "warning",
+            data: {
+              title: "Warning",
+              message: "Open Development Tools console"
+            }
+          },
+          { type: "delimiter", data: {} }
+        ],
+        version: "2.12.3"
+      }
     };
   },
   methods: {
@@ -56,11 +94,40 @@ export default {
             config: {
               placeholder: "."
             }
-          }
+          },
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            shortcut: 'CMD+SHIFT+O',
+            config: {
+              quotePlaceholder: 'Enter a quote',
+              captionPlaceholder: 'Quote\'s author',
+            },
+          },
+          delimiter: Delimiter,
+          warning: {
+            class: Warning,
+            inlineToolbar: true,
+            shortcut: 'CMD+SHIFT+W',
+            config: {
+              titlePlaceholder: 'Title',
+              messagePlaceholder: 'Message',
+            },
+          },
         },
-        onReady: function() {
+        data: this.initData,
+
+
+        onReady: () => {
           console.log("ready");
+          let editor = window.editor
+          new Undo({ editor });
+          new DragDrop(editor);
+
+
+
         },
+
         onChange: function() {
           console.log("change");
         }

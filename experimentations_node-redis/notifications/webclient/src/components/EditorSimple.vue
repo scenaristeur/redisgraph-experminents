@@ -80,7 +80,7 @@ export default {
         /**
         * This Tool will be used as default
         */
-        initialBlock: "paragraph",
+        defaultBlock: "paragraph",
         tools: {
           header: {
             class: Header,

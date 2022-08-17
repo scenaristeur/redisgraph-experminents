@@ -8,6 +8,7 @@
     <input v-model="newName" placeholder="name of the new node" />
     <button @click="addNodeToMap">Add node to map</button>
     <button @click="clearMap">clear map</button>
+        <button @click="populateMap">populate map</button>
 
 
     <hr><hr>
@@ -64,7 +65,7 @@ export default {
     // array of numbers which produce a sum
     this.yarray = ydoc.getArray('count')
 
-    this.ymap = ydoc.getMap('test-map')
+    this.ymap = ydoc.getMap('test-map2')
 
     // observe changes of the sum
     // let app = this
@@ -93,11 +94,7 @@ export default {
 
     // add 1 to the sum
     this.yarray.push([2]) // => "new sum: 1"
-    this.ymap.set('map', new Y.Map())
-    const _map3 = this.ymap.get('map')
-    _map3.set('deepmap', new Y.Map())
-    this.ymap.set('stuff one', 'c2')
-    _map3.set('stuff', 'c3')
+this.populateMap()
 
   },
   methods:{
@@ -123,6 +120,14 @@ export default {
     clearMap(){
       this.ymap.clear()
       this.$forceUpdate();
+    }
+    ,
+    populateMap(){
+      this.ymap.set('map', new Y.Map())
+      const _map3 = this.ymap.get('map')
+      _map3.set('deepmap', new Y.Map())
+      this.ymap.set('stuff one', 'c2')
+      _map3.set('stuff', 'c3')
     }
   }
 

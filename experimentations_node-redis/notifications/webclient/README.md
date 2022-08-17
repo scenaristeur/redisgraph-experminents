@@ -1,5 +1,10 @@
 # webclient
 
+yjs / ymap
+https://github.com/yjs/yjs#shared-types
+
+
+
 PUBLISH app:notifications  "message from Redis2"
 
 to do add editor.js

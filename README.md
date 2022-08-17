@@ -1,3 +1,10 @@
+# redis via websocket
+
+# ymap add nodes
+voir experimentations_node-redis/notifications/webclient
+
+
+
 - https://www.youtube.com/watch?v=aGHALjV6JGc
 
 ```
@@ -8,7 +15,7 @@ docker run --name redisinsight --rm --network host -v redisinsight:/db -p 8001:8
 or with redisgraph+ redisjson -> redis stack https://developer.redis.com/create/redis-stack
 
 ```
- docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 -v redis-data:/data redis/redis-stack:latest
+docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 -v redis-data:/data redis/redis-stack:latest
 ```
 et pour y acceder ` docker exec -it redis-stack redis-cli`
 

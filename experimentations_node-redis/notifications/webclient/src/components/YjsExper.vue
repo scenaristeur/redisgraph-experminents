@@ -8,7 +8,9 @@
     <input v-model="newName" placeholder="name of the new node" />
     <button @click="addNodeToMap">Add node to map</button>
     <button @click="clearMap">clear map</button>
-        <button @click="populateMap">populate map</button>
+    <button @click="populateMap">populate map</button>
+    <input v-model="newStuff" placeholder="name of the stuff" />
+    <button @click="changeStuff">change stuff</button>
 
 
     <hr><hr>
@@ -41,7 +43,8 @@ export default {
       yarray: null,
       newVal: 3,
       newName: '',
-      ymap: null
+      ymap: null,
+      newStuff: 'c4'
     }
   },
   created(){
@@ -94,7 +97,7 @@ export default {
 
     // add 1 to the sum
     this.yarray.push([2]) // => "new sum: 1"
-this.populateMap()
+    this.populateMap()
 
   },
   methods:{
@@ -120,14 +123,19 @@ this.populateMap()
     clearMap(){
       this.ymap.clear()
       this.$forceUpdate();
-    }
-    ,
+    },
     populateMap(){
       this.ymap.set('map', new Y.Map())
       const _map3 = this.ymap.get('map')
       _map3.set('deepmap', new Y.Map())
       this.ymap.set('stuff one', 'c2')
       _map3.set('stuff', 'c3')
+    },
+    changeStuff(){
+      const _map3 = this.ymap.get('map')
+      _map3.set('stuff', this.newStuff)
+      this.newStuff= 'c4'
+      this.$forceUpdate();
     }
   }
 
